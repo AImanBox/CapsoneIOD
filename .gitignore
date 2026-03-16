@@ -1,0 +1,49 @@
+﻿# Dependencies
+node_modules/
+package/node_modules/
+.pnpm-store/
+.venv/
+venv/
+ENV/
+
+# Build outputs
+package/.next/
+package/out/
+ml/models/*.pkl
+ml/models/*.joblib
+
+# Python runtime
+__pycache__/
+*.py[cod]
+*.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment
+.env.local
+.env.*.local

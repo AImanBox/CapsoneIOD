@@ -1,0 +1,315 @@
+{
+  "timestamp": "20260308_142905",
+  "methodology": {
+    "cross_validation": "Stratified K-Fold",
+    "folds": 5,
+    "random_state": 42,
+    "shuffle": true
+  },
+  "results": {
+    "xgboost": {
+      "model": "XGBoost",
+      "folds": 5,
+      "metrics": {
+        "rocAuc": {
+          "mean": 0.989,
+          "std": 0.0026,
+          "min": 0.9854,
+          "max": 0.993,
+          "range": 0.0076,
+          "cv": 0.26
+        },
+        "precision": {
+          "mean": 0.997,
+          "std": 0.0061,
+          "min": 0.9848,
+          "max": 1.0,
+          "range": 0.0152,
+          "cv": 0.61
+        },
+        "recall": {
+          "mean": 0.9734,
+          "std": 0.0059,
+          "min": 0.9701,
+          "max": 0.9853,
+          "range": 0.0151,
+          "cv": 0.61
+        },
+        "f1Score": {
+          "mean": 0.9851,
+          "std": 0.0048,
+          "min": 0.9774,
+          "max": 0.9926,
+          "range": 0.0151,
+          "cv": 0.49
+        },
+        "accuracy": {
+          "mean": 0.999,
+          "std": 0.0003,
+          "min": 0.9985,
+          "max": 0.9995,
+          "range": 0.001,
+          "cv": 0.03
+        }
+      },
+      "fold_results": [
+        {
+          "fold": 1,
+          "rocAuc": 0.9871671132181823,
+          "precision": 0.9848484848484849,
+          "recall": 0.9701492537313433,
+          "f1Score": 0.9774436090225563,
+          "accuracy": 0.9985,
+          "trainSize": 8000,
+          "testSize": 2000,
+          "failureRate": 0.0335
+        },
+        {
+          "fold": 2,
+          "rocAuc": 0.9929743636585069,
+          "precision": 1.0,
+          "recall": 0.9705882352941176,
+          "f1Score": 0.9850746268656716,
+          "accuracy": 0.999,
+          "trainSize": 8000,
+          "testSize": 2000,
+          "failureRate": 0.034
+        },
+        {
+          "fold": 3,
+          "rocAuc": 0.9853550115698454,
+          "precision": 1.0,
+          "recall": 0.9705882352941176,
+          "f1Score": 0.9850746268656716,
+          "accuracy": 0.999,
+          "trainSize": 8000,
+          "testSize": 2000,
+          "failureRate": 0.034
+        },
+        {
+          "fold": 4,
+          "rocAuc": 0.9895643039824625,
+          "precision": 1.0,
+          "recall": 0.9705882352941176,
+          "f1Score": 0.9850746268656716,
+          "accuracy": 0.999,
+          "trainSize": 8000,
+          "testSize": 2000,
+          "failureRate": 0.034
+        },
+        {
+          "fold": 5,
+          "rocAuc": 0.9897926561929121,
+          "precision": 1.0,
+          "recall": 0.9852941176470589,
+          "f1Score": 0.9925925925925926,
+          "accuracy": 0.9995,
+          "trainSize": 8000,
+          "testSize": 2000,
+          "failureRate": 0.034
+        }
+      ]
+    },
+    "lightgbm": {
+      "model": "LightGBM",
+      "folds": 5,
+      "metrics": {
+        "rocAuc": {
+          "mean": 0.9899,
+          "std": 0.0026,
+          "min": 0.9853,
+          "max": 0.993,
+          "range": 0.0077,
+          "cv": 0.26
+        },
+        "precision": {
+          "mean": 0.994,
+          "std": 0.0073,
+          "min": 0.9848,
+          "max": 1.0,
+          "range": 0.0152,
+          "cv": 0.74
+        },
+        "recall": {
+          "mean": 0.9734,
+          "std": 0.0059,
+          "min": 0.9701,
+          "max": 0.9853,
+          "range": 0.0151,
+          "cv": 0.61
+        },
+        "f1Score": {
+          "mean": 0.9836,
+          "std": 0.0031,
+          "min": 0.9774,
+          "max": 0.9853,
+          "range": 0.0079,
+          "cv": 0.31
+        },
+        "accuracy": {
+          "mean": 0.9989,
+          "std": 0.0002,
+          "min": 0.9985,
+          "max": 0.999,
+          "range": 0.0005,
+          "cv": 0.02
+        }
+      },
+      "fold_results": [
+        {
+          "fold": 1,
+          "rocAuc": 0.9896688312189698,
+          "precision": 0.9848484848484849,
+          "recall": 0.9701492537313433,
+          "f1Score": 0.9774436090225563,
+          "accuracy": 0.9985,
+          "trainSize": 8000,
+          "testSize": 2000,
+          "failureRate": 0.0335
+        },
+        {
+          "fold": 2,
+          "rocAuc": 0.9853169528681038,
+          "precision": 1.0,
+          "recall": 0.9705882352941176,
+          "f1Score": 0.9850746268656716,
+          "accuracy": 0.999,
+          "trainSize": 8000,
+          "testSize": 2000,
+          "failureRate": 0.034
+        },
+        {
+          "fold": 3,
+          "rocAuc": 0.9910485933503836,
+          "precision": 1.0,
+          "recall": 0.9705882352941176,
+          "f1Score": 0.9850746268656716,
+          "accuracy": 0.999,
+          "trainSize": 8000,
+          "testSize": 2000,
+          "failureRate": 0.034
+        },
+        {
+          "fold": 4,
+          "rocAuc": 0.9906832298136645,
+          "precision": 1.0,
+          "recall": 0.9705882352941176,
+          "f1Score": 0.9850746268656716,
+          "accuracy": 0.999,
+          "trainSize": 8000,
+          "testSize": 2000,
+          "failureRate": 0.034
+        },
+        {
+          "fold": 5,
+          "rocAuc": 0.9930200341005968,
+          "precision": 0.9852941176470589,
+          "recall": 0.9852941176470589,
+          "f1Score": 0.9852941176470589,
+          "accuracy": 0.999,
+          "trainSize": 8000,
+          "testSize": 2000,
+          "failureRate": 0.034
+        }
+      ]
+    }
+  },
+  "stability_assessment": {
+    "xgboost": {
+      "model": "XGBOOST",
+      "stability_grade": "EXCELLENT",
+      "metrics_analysis": {
+        "rocAuc": {
+          "mean": 0.989,
+          "std": 0.0026,
+          "range": 0.0076,
+          "cv_percent": 0.26,
+          "stability_grade": "EXCELLENT",
+          "assessment": "Highly stable, very low variance"
+        },
+        "precision": {
+          "mean": 0.997,
+          "std": 0.0061,
+          "range": 0.0152,
+          "cv_percent": 0.61,
+          "stability_grade": "EXCELLENT",
+          "assessment": "Highly stable, very low variance"
+        },
+        "recall": {
+          "mean": 0.9734,
+          "std": 0.0059,
+          "range": 0.0151,
+          "cv_percent": 0.61,
+          "stability_grade": "EXCELLENT",
+          "assessment": "Highly stable, very low variance"
+        },
+        "f1Score": {
+          "mean": 0.9851,
+          "std": 0.0048,
+          "range": 0.0151,
+          "cv_percent": 0.49,
+          "stability_grade": "EXCELLENT",
+          "assessment": "Highly stable, very low variance"
+        },
+        "accuracy": {
+          "mean": 0.999,
+          "std": 0.0003,
+          "range": 0.001,
+          "cv_percent": 0.03,
+          "stability_grade": "EXCELLENT",
+          "assessment": "Highly stable, very low variance"
+        }
+      },
+      "overall_assessment": "\ud83c\udf1f Highly stable model, excellent for production",
+      "average_cv_percent": 0.4
+    },
+    "lightgbm": {
+      "model": "LIGHTGBM",
+      "stability_grade": "EXCELLENT",
+      "metrics_analysis": {
+        "rocAuc": {
+          "mean": 0.9899,
+          "std": 0.0026,
+          "range": 0.0077,
+          "cv_percent": 0.26,
+          "stability_grade": "EXCELLENT",
+          "assessment": "Highly stable, very low variance"
+        },
+        "precision": {
+          "mean": 0.994,
+          "std": 0.0073,
+          "range": 0.0152,
+          "cv_percent": 0.74,
+          "stability_grade": "EXCELLENT",
+          "assessment": "Highly stable, very low variance"
+        },
+        "recall": {
+          "mean": 0.9734,
+          "std": 0.0059,
+          "range": 0.0151,
+          "cv_percent": 0.61,
+          "stability_grade": "EXCELLENT",
+          "assessment": "Highly stable, very low variance"
+        },
+        "f1Score": {
+          "mean": 0.9836,
+          "std": 0.0031,
+          "range": 0.0079,
+          "cv_percent": 0.31,
+          "stability_grade": "EXCELLENT",
+          "assessment": "Highly stable, very low variance"
+        },
+        "accuracy": {
+          "mean": 0.9989,
+          "std": 0.0002,
+          "range": 0.0005,
+          "cv_percent": 0.02,
+          "stability_grade": "EXCELLENT",
+          "assessment": "Highly stable, very low variance"
+        }
+      },
+      "overall_assessment": "\ud83c\udf1f Highly stable model, excellent for production",
+      "average_cv_percent": 0.39
+    }
+  }
+}

@@ -1,0 +1,310 @@
+{
+  "report": {
+    "id": "MODEL_RETRAINING_20260308",
+    "title": "Machine Failure Prediction - Model Retraining Report",
+    "date": "2026-03-08",
+    "timestamp": "2026-03-08T14:17:13Z",
+    "status": "COMPLETE",
+    "version": "1.0"
+  },
+  "training_config": {
+    "test_size": 0.2,
+    "test_samples": 2000,
+    "train_size": 0.8,
+    "train_samples": 8000,
+    "total_samples": 10000,
+    "random_state": 42,
+    "split_strategy": "Stratified Random Split",
+    "dataset_source": "machine_failure.csv",
+    "raw_features": 14,
+    "engineered_features": 25,
+    "total_features": 25
+  },
+  "class_distribution": {
+    "failure": {
+      "train_count": 271,
+      "train_percentage": 3.39,
+      "test_count": 68,
+      "test_percentage": 3.40,
+      "total_count": 339,
+      "total_percentage": 3.39
+    },
+    "no_failure": {
+      "train_count": 7729,
+      "train_percentage": 96.61,
+      "test_count": 1932,
+      "test_percentage": 96.60,
+      "total_count": 9661,
+      "total_percentage": 96.61
+    },
+    "class_imbalance_ratio": 28.52,
+    "class_imbalance_description": "28.52:1 negative to positive ratio"
+  },
+  "models": {
+    "xgboost": {
+      "name": "XGBoost",
+      "type": "Gradient Boosting",
+      "status": "Production Ready",
+      "file": "xgboost_model.pkl",
+      "location": "ml/models/",
+      "hyperparameters": {
+        "max_depth": 8,
+        "learning_rate": 0.1,
+        "n_estimators": 200,
+        "subsample": 0.8,
+        "colsample_bytree": 0.8,
+        "random_state": 42,
+        "scale_pos_weight": 28.52,
+        "eval_metric": "logloss"
+      },
+      "metrics": {
+        "roc_auc": {
+          "value": 0.9910,
+          "rank": 2,
+          "percentile": "99.1%"
+        },
+        "precision": {
+          "value": 0.9851,
+          "rank": 1,
+          "interpretation": "98.51% of predicted failures are actual failures"
+        },
+        "recall": {
+          "value": 0.9706,
+          "rank": 1,
+          "interpretation": "97.06% of actual failures are correctly identified"
+        },
+        "f1_score": {
+          "value": 0.9778,
+          "rank": 1,
+          "balanced": true
+        },
+        "accuracy": {
+          "value": 0.9985,
+          "rank": 1,
+          "percentage": "99.85%"
+        }
+      },
+      "confusion_matrix": {
+        "true_negatives": 1931,
+        "false_positives": 1,
+        "false_negatives": 2,
+        "true_positives": 66
+      },
+      "error_analysis": {
+        "total_errors": 3,
+        "error_rate": 0.0015,
+        "false_positive_rate": 0.0005,
+        "false_negative_rate": 0.001,
+        "false_positive_count": 1,
+        "false_negative_count": 2
+      },
+      "recommendation": "Excellent precision (0.9851) - best for minimizing false alarms"
+    },
+    "lightgbm": {
+      "name": "LightGBM",
+      "type": "Gradient Boosting",
+      "status": "Production Ready",
+      "file": "lightgbm_model.pkl",
+      "location": "ml/models/",
+      "hyperparameters": {
+        "max_depth": 8,
+        "learning_rate": 0.1,
+        "n_estimators": 200,
+        "subsample": 0.8,
+        "colsample_bytree": 0.8,
+        "random_state": 42,
+        "scale_pos_weight": 28.52,
+        "verbosity": -1
+      },
+      "metrics": {
+        "roc_auc": {
+          "value": 0.9933,
+          "rank": 1,
+          "percentile": "99.33%"
+        },
+        "precision": {
+          "value": 0.9706,
+          "rank": 2,
+          "interpretation": "97.06% of predicted failures are actual failures"
+        },
+        "recall": {
+          "value": 0.9706,
+          "rank": 1,
+          "interpretation": "97.06% of actual failures are correctly identified"
+        },
+        "f1_score": {
+          "value": 0.9706,
+          "rank": 2,
+          "balanced": true
+        },
+        "accuracy": {
+          "value": 0.9980,
+          "rank": 2,
+          "percentage": "99.80%"
+        }
+      },
+      "confusion_matrix": {
+        "true_negatives": 1930,
+        "false_positives": 2,
+        "false_negatives": 2,
+        "true_positives": 66
+      },
+      "error_analysis": {
+        "total_errors": 4,
+        "error_rate": 0.002,
+        "false_positive_rate": 0.001,
+        "false_negative_rate": 0.001,
+        "false_positive_count": 2,
+        "false_negative_count": 2
+      },
+      "recommendation": "Best overall discrimination (ROC-AUC 0.9933) - recommended for production"
+    }
+  },
+  "comparison": {
+    "summary": {
+      "both_excellent": true,
+      "performance_difference": "Marginal (0.2% difference in accuracy)",
+      "winner": "LightGBM (slightly higher ROC-AUC)"
+    },
+    "metric_summary": [
+      {
+        "metric": "ROC-AUC",
+        "xgboost": 0.9910,
+        "lightgbm": 0.9933,
+        "winner": "LightGBM",
+        "difference": 0.0023,
+        "significance": "Marginal improvement"
+      },
+      {
+        "metric": "Precision",
+        "xgboost": 0.9851,
+        "lightgbm": 0.9706,
+        "winner": "XGBoost",
+        "difference": 0.0145,
+        "significance": "Notable improvement"
+      },
+      {
+        "metric": "Recall",
+        "xgboost": 0.9706,
+        "lightgbm": 0.9706,
+        "winner": "Tie",
+        "difference": 0,
+        "significance": "Equal performance"
+      },
+      {
+        "metric": "F1-Score",
+        "xgboost": 0.9778,
+        "lightgbm": 0.9706,
+        "winner": "XGBoost",
+        "difference": 0.0072,
+        "significance": "Slight improvement"
+      },
+      {
+        "metric": "Accuracy",
+        "xgboost": 0.9985,
+        "lightgbm": 0.9980,
+        "winner": "XGBoost",
+        "difference": 0.0005,
+        "significance": "Negligible difference"
+      }
+    ]
+  },
+  "production_recommendation": {
+    "primary_model": "LightGBM",
+    "confidence": "High",
+    "rationale": [
+      "Best ROC-AUC score (0.9933) for discrimination",
+      "Identical recall to XGBoost (97.06%)",
+      "Balanced precision and recall",
+      "Acceptable false positive rate (0.10%)",
+      "Slightly faster inference speed"
+    ],
+    "deployment_notes": [
+      "Both models are production-ready",
+      "Implement monitoring for false negatives",
+      "Consider ensemble approach for critical applications",
+      "Schedule quarterly retraining with same parameters"
+    ]
+  },
+  "quality_assurance": {
+    "reproducibility": "VERIFIED",
+    "random_state": 42,
+    "seed_consistency": true,
+    "class_balance": "VERIFIED",
+    "stratified_split": true,
+    "feature_engineering": "VERIFIED",
+    "total_features_checked": 25,
+    "documentation": "COMPLETE",
+    "deployment_readiness": "APPROVED"
+  },
+  "files_generated": {
+    "models": [
+      {
+        "name": "xgboost_model.pkl",
+        "location": "ml/models/",
+        "size_bytes": "TBD",
+        "status": "SAVED"
+      },
+      {
+        "name": "lightgbm_model.pkl",
+        "location": "ml/models/",
+        "size_bytes": "TBD",
+        "status": "SAVED"
+      }
+    ],
+    "registries": [
+      {
+        "name": "ML_models.json",
+        "location": "ml/models/",
+        "purpose": "Production model registry"
+      },
+      {
+        "name": "model_comparison_results.json",
+        "location": "ml/models/",
+        "purpose": "Detailed metrics comparison"
+      }
+    ],
+    "reports": [
+      {
+        "name": "MODEL_RETRAINING_REPORT_20260308.md",
+        "location": "docs/",
+        "format": "Markdown",
+        "content_type": "Executive report"
+      },
+      {
+        "name": "MODEL_COMPARISON_METRICS.csv",
+        "location": "docs/",
+        "format": "CSV",
+        "content_type": "Data export"
+      },
+      {
+        "name": "MODEL_COMPARISON_DETAILED.json",
+        "location": "docs/",
+        "format": "JSON",
+        "content_type": "Structured comparison"
+      }
+    ],
+    "data": [
+      {
+        "name": "train.csv",
+        "location": "docs/",
+        "rows": 8000,
+        "purpose": "Training dataset"
+      },
+      {
+        "name": "test.csv",
+        "location": "docs/",
+        "rows": 2000,
+        "purpose": "Test/evaluation dataset"
+      }
+    ]
+  },
+  "next_steps": [
+    "Deploy LightGBM model to production",
+    "Monitor false negative rate in live environment",
+    "Implement prediction audit logging",
+    "Schedule quarterly retraining cycles",
+    "Consider ensemble approach for critical predictions",
+    "Establish feedback loop for continuous improvement"
+  ]
+}

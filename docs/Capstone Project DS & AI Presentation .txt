@@ -1,0 +1,23 @@
+Capstone Project DS & AI Presentation 
+
+
+The capstone project will allow you to showcase skills learned throughout the course by defining, designing and delivering an end-to-end data science solution.
+Students must prepare a 12-minute PowerPoint presentation and a 5-minute Jupyter Notebook technical presentation. This presentation will occur on the last day of the course.
+
+The PowerPoint presentation should cover the following:
+Business Problem
+Data Science Problem
+Stakeholders
+Dataset
+EDA
+Models
+Evaluation and comparison
+Result
+Conclusion / Future Work
+The Jupyter Notebook should be readable and well-commented
+
+Deliverables:
+1. Powerpoint slide
+2. Jupyter notebook
+3. Raw Data
+4. Project Documentation
