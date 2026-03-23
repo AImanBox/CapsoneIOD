@@ -1,0 +1,21 @@
+{
+  "total_records": 27286,
+  "predicted_failures": 430,
+  "failure_rate": 1.58,
+  "probability_stats": {
+    "mean": 0.003385,
+    "median": 0.003385,
+    "std": 0.0,
+    "min": 0.003385,
+    "max": 0.003385,
+    "q25": 0.003385,
+    "q75": 0.003385
+  },
+  "risk_distribution": {
+    "Critical": 430,
+    "High": 0,
+    "Medium": 0,
+    "Low": 26856,
+    "Very Low": 0
+  }
+}

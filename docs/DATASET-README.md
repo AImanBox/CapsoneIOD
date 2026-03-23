@@ -1,6 +1,6 @@
 # Training & Test Dataset Documentation
 
-**Files:** `docs/train.csv` and `docs/test.csv`  
+**Files:** `docs/train_tr.csv` (training split) and `docs/train_te.csv` (test split)  
 **Train Rows:** 136,429 (production dataset)  
 **Test Rows:** 90,954 (production dataset)  
 **Source:** [Binary Classification of Machine Failures](https://github.com/JMViJi/Binary-Classification-of-Machine-Failures)  
@@ -80,7 +80,7 @@ y = df_train['Machine failure']
 model.fit(X, y)  # Learn patterns
 ```
 
-### Test Dataset (`docs/test.csv`)
+### Test Dataset (`docs/train_te.csv`)
 
 **Purpose:** Model evaluation and predictions  
 **Rows:** 50 (sample) | Full: 2,500+  

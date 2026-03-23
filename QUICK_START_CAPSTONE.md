@@ -64,7 +64,8 @@ capstone_project/
 │   │   └── *.json                          📊 Metrics & features
 │   └── 📂 data/                            # Symlink to ../docs
 │       ├── train.csv (136,429 samples)
-│       └── test.csv (90,954 samples)
+│       ├── train_tr.csv (109,143 samples - 80% split)
+│       └── train_te.csv (27,286 samples - 20% split)
 │
 ├── 📂 src/app/(dashboard)/models/           # Frontend Dashboard
 │   ├── 📓 README.md                         # Dashboard guide
@@ -139,7 +140,7 @@ capstone_project/
 │
 ├── 📂 docs/                                # Documentation & Data
 │   ├── train.csv (136,429 samples)
-│   ├── test.csv (90,954 samples)
+│   ├── train_te.csv (27,286 samples - 20% test split)
 │   ├── 📓 DATASET-README.md
 │   ├── 📓 DOCUMENTATION_INDEX.md
 │   ├── 📂 technical-description/

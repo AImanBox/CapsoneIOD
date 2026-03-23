@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 @file compare_models_simple.py
-@description Simple model comparison between machine_failure.csv and train.csv
+@description Simple model comparison using train_tr.csv (training) and train_te.csv (validation)
 @module ml.scripts.compare_models_simple
 @created 2026-03-07
 """
@@ -32,8 +32,8 @@ class SimpleModelComparison:
         self.output_dir = Path('ml/models')
         self.output_dir.mkdir(parents=True, exist_ok=True)
         self.results = {
-            'machine_failure': {},
-            'train': {}
+            'train': {},
+            'test': {}
         }
     
     def analyze_datasets(self):
@@ -42,27 +42,27 @@ class SimpleModelComparison:
         print("DATASET ANALYSIS & COMPARISON")
         print("="*70)
         
-        # Load datasets
-        mf_df = pd.read_csv('docs/machine_failure.csv')
-        train_df = pd.read_csv('docs/train.csv')
+        # Load datasets - use train_tr.csv (training) and train_te.csv (validation)
+        train_df = pd.read_csv('docs/train_tr.csv')
+        test_df = pd.read_csv('docs/train_te.csv')
         
         # Check columns
-        print(f"\nmachine_failure.csv columns: {list(mf_df.columns)[:5]}")
-        print(f"train.csv columns: {list(train_df.columns)[:5]}")
+        print(f"\ntrain_tr.csv columns: {list(train_df.columns)[:5]}")
+        print(f"train_te.csv columns: {list(test_df.columns)[:5]}")
         
-        print(f"\n📊 machine_failure.csv:")
-        print(f"   Rows: {len(mf_df):,}")
-        target_col = [c for c in mf_df.columns if 'failure' in c.lower()][0]
-        print(f"   Failures: {int(mf_df[target_col].sum())} ({mf_df[target_col].mean():.2%})")
-        print(f"   Non-failures: {len(mf_df) - int(mf_df[target_col].sum())}")
-        
-        print(f"\n📊 train.csv:")
+        print(f"\n📊 train_tr.csv (Training Set - 80%):")
         print(f"   Rows: {len(train_df):,}")
-        target_col_train = [c for c in train_df.columns if 'failure' in c.lower()][0]
-        print(f"   Failures: {int(train_df[target_col_train].sum())} ({train_df[target_col_train].mean():.2%})")
-        print(f"   Non-failures: {len(train_df) - int(train_df[target_col_train].sum())}")
+        target_col = [c for c in train_df.columns if 'failure' in c.lower()][0]
+        print(f"   Failures: {int(train_df[target_col].sum())} ({train_df[target_col].mean():.2%})")
+        print(f"   Non-failures: {len(train_df) - int(train_df[target_col].sum())}")
         
-        return mf_df, train_df
+        print(f"\n📊 train_te.csv (Validation Set - 20%):")
+        print(f"   Rows: {len(test_df):,}")
+        target_col_test = [c for c in test_df.columns if 'failure' in c.lower()][0]
+        print(f"   Failures: {int(test_df[target_col_test].sum())} ({test_df[target_col_test].mean():.2%})")
+        print(f"   Non-failures: {len(test_df) - int(test_df[target_col_test].sum())}")
+        
+        return train_df, test_df
     
     def prepare_simple(self, df: pd.DataFrame, dataset_name: str):
         """Prepare dataset with simple feature selection."""
@@ -97,22 +97,18 @@ class SimpleModelComparison:
         X = df[feature_cols]
         y = df[target_col]
         
-        # Split
-        X_train, X_test, y_train, y_test = train_test_split(
-            X, y, test_size=0.2, stratify=y, random_state=42
-        )
+        # Use pre-split datasets directly (train_tr.csv for training, train_te.csv for validation)
+        scale_pos_weight = (y == 0).sum() / (y == 1).sum()
         
-        scale_pos_weight = (y_train == 0).sum() / (y_train == 1).sum()
-        
-        print(f"   ✅ Train: {len(X_train)}, Test: {len(X_test)}")
+        print(f"   ✅ Samples: {len(X)}")
         print(f"   📊 Features: {len(feature_cols)}, Scale pos weight: {scale_pos_weight:.2f}")
         
-        return X_train, X_test, y_train, y_test, scale_pos_weight, feature_cols
+        return X, X, y, y, scale_pos_weight, feature_cols
     
     def train_and_evaluate(self, X_train, X_test, y_train, y_test, dataset_name: str):
-        """Train both models."""
+        """Train both models on training set, evaluate on validation set."""
         print(f"\n" + "="*70)
-        print(f"TRAINING ON {dataset_name.upper()}")
+        print(f"TRAINING ON {dataset_name.upper()} | VALIDATING ON VALIDATION SET")
         print("="*70)
         
         results = {}
@@ -188,25 +184,25 @@ class SimpleModelComparison:
         comparison_data = {
             'timestamp': datetime.now().isoformat(),
             'xgboost': {
-                'machine_failure': self.results['machine_failure']['xgboost'],
                 'train': self.results['train']['xgboost'],
+                'test': self.results['test']['xgboost'],
                 'differences': {
-                    'rocAuc': round(self.results['train']['xgboost']['rocAuc'] - self.results['machine_failure']['xgboost']['rocAuc'], 4),
-                    'precision': round(self.results['train']['xgboost']['precision'] - self.results['machine_failure']['xgboost']['precision'], 4),
-                    'recall': round(self.results['train']['xgboost']['recall'] - self.results['machine_failure']['xgboost']['recall'], 4),
-                    'f1Score': round(self.results['train']['xgboost']['f1Score'] - self.results['machine_failure']['xgboost']['f1Score'], 4),
-                    'accuracy': round(self.results['train']['xgboost']['accuracy'] - self.results['machine_failure']['xgboost']['accuracy'], 4),
+                    'rocAuc': round(self.results['test']['xgboost']['rocAuc'] - self.results['train']['xgboost']['rocAuc'], 4),
+                    'precision': round(self.results['test']['xgboost']['precision'] - self.results['train']['xgboost']['precision'], 4),
+                    'recall': round(self.results['test']['xgboost']['recall'] - self.results['train']['xgboost']['recall'], 4),
+                    'f1Score': round(self.results['test']['xgboost']['f1Score'] - self.results['train']['xgboost']['f1Score'], 4),
+                    'accuracy': round(self.results['test']['xgboost']['accuracy'] - self.results['train']['xgboost']['accuracy'], 4),
                 }
             },
             'lightgbm': {
-                'machine_failure': self.results['machine_failure']['lightgbm'],
                 'train': self.results['train']['lightgbm'],
+                'test': self.results['test']['lightgbm'],
                 'differences': {
-                    'rocAuc': round(self.results['train']['lightgbm']['rocAuc'] - self.results['machine_failure']['lightgbm']['rocAuc'], 4),
-                    'precision': round(self.results['train']['lightgbm']['precision'] - self.results['machine_failure']['lightgbm']['precision'], 4),
-                    'recall': round(self.results['train']['lightgbm']['recall'] - self.results['machine_failure']['lightgbm']['recall'], 4),
-                    'f1Score': round(self.results['train']['lightgbm']['f1Score'] - self.results['machine_failure']['lightgbm']['f1Score'], 4),
-                    'accuracy': round(self.results['train']['lightgbm']['accuracy'] - self.results['machine_failure']['lightgbm']['accuracy'], 4),
+                    'rocAuc': round(self.results['test']['lightgbm']['rocAuc'] - self.results['train']['lightgbm']['rocAuc'], 4),
+                    'precision': round(self.results['test']['lightgbm']['precision'] - self.results['train']['lightgbm']['precision'], 4),
+                    'recall': round(self.results['test']['lightgbm']['recall'] - self.results['train']['lightgbm']['recall'], 4),
+                    'f1Score': round(self.results['test']['lightgbm']['f1Score'] - self.results['train']['lightgbm']['f1Score'], 4),
+                    'accuracy': round(self.results['test']['lightgbm']['accuracy'] - self.results['train']['lightgbm']['accuracy'], 4),
                 }
             }
         }
@@ -232,30 +228,30 @@ class SimpleModelComparison:
     def run(self):
         """Run complete comparison."""
         print("\n" + "🔬 "*30)
-        print("MODEL COMPARISON: machine_failure.csv vs train.csv")
+        print("MODEL COMPARISON: train.csv vs test.csv")
         print("🔬 "*30)
         
         # Analyze
-        mf_df, train_df = self.analyze_datasets()
-        
-        # Prepare machine_failure
-        X_train_mf, X_test_mf, y_train_mf, y_test_mf, _, _ = self.prepare_simple(
-            mf_df, "machine_failure.csv"
-        )
+        train_df, test_df = self.analyze_datasets()
         
         # Prepare train.csv
         X_train_train, X_test_train, y_train_train, y_test_train, _, _ = self.prepare_simple(
             train_df, "train.csv"
         )
         
-        # Train on machine_failure
-        self.results['machine_failure'] = self.train_and_evaluate(
-            X_train_mf, X_test_mf, y_train_mf, y_test_mf, "machine_failure.csv"
+        # Prepare test.csv
+        X_train_test, X_test_test, y_train_test, y_test_test, _, _ = self.prepare_simple(
+            test_df, "test.csv"
         )
         
         # Train on train.csv
         self.results['train'] = self.train_and_evaluate(
             X_train_train, X_test_train, y_train_train, y_test_train, "train.csv"
+        )
+        
+        # Train on test.csv
+        self.results['test'] = self.train_and_evaluate(
+            X_train_test, X_test_test, y_train_test, y_test_test, "test.csv"
         )
         
         # Generate comparison

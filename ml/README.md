@@ -112,14 +112,15 @@ prediction_proba = model.predict_proba(X_new[features])
 
 ## Dataset
 
-### Training Data (docs/train.csv)
+### Training Split (docs/train_tr.csv)
 
 | Metric | Value |
 |--------|-------|
-| **Rows** | 136,429 |
+| **Rows** | 109,143 |
 | **Columns** | 14 |
+| **Split** | 80% of full dataset |
 | **Target Variable** | Machine failure (0/1) |
-| **Class Imbalance** | ~98% no failure, ~2% failure |
+| **Class Imbalance** | ~96.2% no failure, ~3.8% failure |
 | **Features** | 7 sensors + 5 failure modes |
 
 **Columns:**
@@ -134,13 +135,15 @@ prediction_proba = model.predict_proba(X_new[features])
 - `Machine failure` - Target (0 = no failure, 1 = failure)
 - `TWF,HDF,PWF,OSF,RNF` - Failure mode indicators
 
-### Test Data (docs/test.csv)
+### Test Split (docs/train_te.csv)
 
 | Metric | Value |
 |--------|-------|
-| **Rows** | 90,954 |
-| **Columns** | 13 (no target, includes failure modes) |
-| **Purpose** | Final evaluation |
+| **Rows** | 27,286 |
+| **Columns** | 14 |
+| **Split** | 20% of full dataset |
+| **Purpose** | Model validation and performance evaluation |
+| **Target Variable** | Machine failure (0/1) |
 
 ---
 

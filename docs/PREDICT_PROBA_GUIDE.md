@@ -28,19 +28,29 @@ predict_proba([[sample1], [sample2]]) =
 
 ## Usage Steps
 
-### Step 1: Load Models
+### Step 1: Load Models and Test Data
 ```python
 import pickle
+import pandas as pd
+
+# Load models
 xgb_model = pickle.load(open('ml/models/xgboost_model.pkl', 'rb'))
 lgb_model = pickle.load(open('ml/models/lightgbm_model.pkl', 'rb'))
+
+# Load inference data from test.csv (90,954 original inference samples)
+test_df = pd.read_csv('docs/test.csv')
+X_test = test_df.drop(columns=['id', 'Product ID', 'Type', 'TWF', 'HDF', 'PWF', 'OSF', 'RNF'])
 ```
 
 ### Step 2: Call predict_proba()
 ```python
-# Get probability predictions for all samples
-xgb_proba = xgb_model.predict_proba(X_test)      # Shape: (2000, 2)
-lgb_proba = lgb_model.predict_proba(X_test)      # Shape: (2000, 2)
+# Get probability predictions for all inference samples from test.csv (90,954 samples)
+# Note: X_test is loaded from docs/test.csv (original inference dataset from GitHub)
+xgb_proba = xgb_model.predict_proba(X_test)      # Shape: (90954, 2) from test.csv
+lgb_proba = lgb_model.predict_proba(X_test)      # Shape: (90954, 2) from test.csv
 ```
+
+**Important**: The predictions are made on the **test.csv dataset** (90,954 samples), which is the original inference set from the Kaggle competition. This dataset does NOT have the target variable and is used for making real predictions on new/unseen machines.
 
 ### Step 3: Extract Failure Probabilities (Class 1)
 ```python
@@ -131,24 +141,24 @@ uncertain_count = uncertain_mask.sum()
 
 ## Your Project Results
 
-### Current Predictions (8,000 machines)
-- **Total samples**: 8,000
-- **Critical failures (prob >= 0.95)**: 271
-- **High-risk (prob >= 0.7)**: 271
-- **Medium-risk (0.5-0.7)**: 0
-- **Low-risk (prob < 0.3)**: 7,729
+### Current Predictions (90,954 inference samples)
+- **Total samples**: 90,954 (from test.csv)
+- **Critical failures (prob >= 0.95)**: 306
+- **High-risk (prob >= 0.7)**: 306
+- **Medium-risk (0.5-0.7)**: TBD
+- **Low-risk (prob < 0.3)**: ~26,700
 
 ### Model Statistics
-**LightGBM** (Best performing model):
-- ROC-AUC: 0.9933
-- Accuracy: 99.80%
-- Mean failure probability: 0.0339 (3.39%)
+**LightGBM** (Predictions on test.csv inference set):
+- ROC-AUC: 0.9365
+- Accuracy: 98.38%
+- Inference samples processed: 90,954 (from test.csv)
 - Predictions saved in: `ml/models/failure_probabilities.csv`
 
-**XGBoost** (Backup model):
-- ROC-AUC: 0.9910
-- Accuracy: 99.85%
-- Mean failure probability: Similar to LightGBM
+**XGBoost** (Predictions on test.csv inference set):
+- ROC-AUC: 0.9400
+- Accuracy: 98.63%
+- Inference samples processed: 90,954 (from test.csv)
 
 ---
 
@@ -223,8 +233,12 @@ import pandas as pd
 # Load model
 model = pickle.load(open('ml/models/lightgbm_model.pkl', 'rb'))
 
-# Get predictions
-proba = model.predict_proba(X_test)              # Shape: (n_samples, 2)
+# Load inference data from test.csv (90,954 original inference samples)
+test_df = pd.read_csv('docs/test.csv')
+X_test = test_df.drop(columns=['id', 'Product ID', 'Type', 'TWF', 'HDF', 'PWF', 'OSF', 'RNF'])
+
+# Get predictions from test.csv data
+proba = model.predict_proba(X_test)              # Shape: (90954, 2) - from test.csv
 failure_prob = proba[:, 1]                      # Failure probabilities
 
 # Binary predictions

@@ -51,19 +51,19 @@ When `Machine Failure = 1`, one or more of these modes occurred:
 
 ### Sample Data
 
-**Training File:** [`docs/train.csv`](./train.csv)  
+**Training Split File:** [`docs/train_tr.csv`](./train_tr.csv)  
 **Format:** CSV (Comma-Separated Values)  
-**Rows:** 100 (representative sample)  
+**Rows:** 109,143 (80% of full dataset)  
 **Columns:** 13 (includes target & failure modes)  
-**Size:** ~10 KB  
-**Full Dataset:** 6.85 MB (available on GitHub)
+**Size:** ~5.4 MB  
+**Source:** 80% split for model training
 
-**Test File:** [`docs/test.csv`](./test.csv)  
+**Test Split File:** [`docs/train_te.csv`](./train_te.csv)  
 **Format:** CSV (Comma-Separated Values)  
-**Rows:** 50 (representative sample)  
-**Columns:** 8 (sensor features only, no target)  
-**Size:** ~5 KB  
-**Full Test Dataset:** 1.8 MB (available on GitHub)
+**Rows:** 27,286 (20% of full dataset)  
+**Columns:** 13 (includes target & failure modes)  
+**Size:** ~1.35 MB  
+**Source:** 20% split for model validation and performance evaluation
 
 ### Dataset Documentation
 
@@ -257,7 +257,7 @@ JMViJi/Binary-Classification-of-Machine-Failures/
 ├── data/
 │   └── README and Forests Stack
 ├── input/
-│   └── CSV files (train.csv, test.csv)
+│   └── CSV files (train_tr.csv, train_te.csv)
 ├── Binary classification of machine learning - Part1.ipynb
 ├── Binary classification of machine learning - Part2.ipynb
 ├── readme.md (Project documentation)

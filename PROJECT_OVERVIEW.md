@@ -160,8 +160,8 @@ d:\Project\capstone_project\
 │   │   ├── ML_models.json                # Model registry
 │   │   └── *.json                        # Metrics & features
 │   ├── data/                             # Dataset symlink
-│   │   ├── train.csv (136K samples)
-│   │   └── test.csv (91K samples)
+│   │   ├── train_tr.csv (109K samples - 80% training split)
+│   │   └── train_te.csv (27K samples - 20% test split)
 │   └── requirements.txt                  # Python dependencies
 │
 ├── src/app/(dashboard)/models/           # Frontend Dashboard
@@ -197,8 +197,8 @@ d:\Project\capstone_project\
 │   └── __mocks__/mock-data.ts            # Development mock data
 │
 ├── docs/                                  # Documentation
-│   ├── train.csv                         # Training dataset
-│   ├── test.csv                          # Test dataset
+│   ├── train_tr.csv                      # Training split (80%)
+│   ├── train_te.csv                      # Test split (20%)
 │   ├── DATASET-README.md
 │   └── technical-description/
 │

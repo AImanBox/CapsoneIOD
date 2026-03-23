@@ -9,36 +9,36 @@
   },
   "training_config": {
     "test_size": 0.2,
-    "test_samples": 2000,
+    "test_samples": 27286,
     "train_size": 0.8,
-    "train_samples": 8000,
-    "total_samples": 10000,
+    "train_samples": 109143,
+    "total_samples": 136428,
     "random_state": 42,
     "split_strategy": "Stratified Random Split",
-    "dataset_source": "machine_failure.csv",
+    "dataset_source": "train.csv (GitHub)",
     "raw_features": 14,
     "engineered_features": 25,
     "total_features": 25
   },
   "class_distribution": {
     "failure": {
-      "train_count": 271,
-      "train_percentage": 3.39,
-      "test_count": 68,
-      "test_percentage": 3.40,
-      "total_count": 339,
-      "total_percentage": 3.39
+      "train_count": 1718,
+      "train_percentage": 1.57,
+      "test_count": 430,
+      "test_percentage": 1.58,
+      "total_count": 2148,
+      "total_percentage": 1.57
     },
     "no_failure": {
-      "train_count": 7729,
-      "train_percentage": 96.61,
-      "test_count": 1932,
-      "test_percentage": 96.60,
-      "total_count": 9661,
-      "total_percentage": 96.61
+      "train_count": 107425,
+      "train_percentage": 98.43,
+      "test_count": 26856,
+      "test_percentage": 98.42,
+      "total_count": 134281,
+      "total_percentage": 98.43
     },
-    "class_imbalance_ratio": 28.52,
-    "class_imbalance_description": "28.52:1 negative to positive ratio"
+    "class_imbalance_ratio": 62.53,
+    "class_imbalance_description": "62.53:1 negative to positive ratio"
   },
   "models": {
     "xgboost": {
@@ -54,51 +54,51 @@
         "subsample": 0.8,
         "colsample_bytree": 0.8,
         "random_state": 42,
-        "scale_pos_weight": 28.52,
+        "scale_pos_weight": 62.53,
         "eval_metric": "logloss"
       },
       "metrics": {
         "roc_auc": {
-          "value": 0.9910,
-          "rank": 2,
-          "percentile": "99.1%"
+          "value": 0.9400,
+          "rank": 1,
+          "percentile": "94.00%"
         },
         "precision": {
-          "value": 0.9851,
+          "value": 0.8909,
           "rank": 1,
-          "interpretation": "98.51% of predicted failures are actual failures"
+          "interpretation": "89.09% of predicted failures are actual failures"
         },
         "recall": {
-          "value": 0.9706,
-          "rank": 1,
-          "interpretation": "97.06% of actual failures are correctly identified"
+          "value": 0.7977,
+          "rank": 2,
+          "interpretation": "79.77% of actual failures are correctly identified"
         },
         "f1_score": {
-          "value": 0.9778,
+          "value": 0.8417,
           "rank": 1,
           "balanced": true
         },
         "accuracy": {
-          "value": 0.9985,
+          "value": 0.9953,
           "rank": 1,
-          "percentage": "99.85%"
+          "percentage": "99.53%"
         }
       },
       "confusion_matrix": {
-        "true_negatives": 1931,
-        "false_positives": 1,
-        "false_negatives": 2,
-        "true_positives": 66
+        "true_negatives": 26814,
+        "false_positives": 42,
+        "false_negatives": 87,
+        "true_positives": 343
       },
       "error_analysis": {
-        "total_errors": 3,
-        "error_rate": 0.0015,
-        "false_positive_rate": 0.0005,
-        "false_negative_rate": 0.001,
-        "false_positive_count": 1,
-        "false_negative_count": 2
+        "total_errors": 129,
+        "error_rate": 0.0047,
+        "false_positive_rate": 0.0016,
+        "false_negative_rate": 0.2023,
+        "false_positive_count": 42,
+        "false_negative_count": 87
       },
-      "recommendation": "Excellent precision (0.9851) - best for minimizing false alarms"
+      "recommendation": "Excellent precision (0.8909) with lowest false alarm rate - best for general use"
     },
     "lightgbm": {
       "name": "LightGBM",
@@ -113,51 +113,51 @@
         "subsample": 0.8,
         "colsample_bytree": 0.8,
         "random_state": 42,
-        "scale_pos_weight": 28.52,
+        "scale_pos_weight": 62.53,
         "verbosity": -1
       },
       "metrics": {
         "roc_auc": {
-          "value": 0.9933,
-          "rank": 1,
-          "percentile": "99.33%"
+          "value": 0.9365,
+          "rank": 2,
+          "percentile": "93.65%"
         },
         "precision": {
-          "value": 0.9706,
+          "value": 0.6667,
           "rank": 2,
-          "interpretation": "97.06% of predicted failures are actual failures"
+          "interpretation": "66.67% of predicted failures are actual failures"
         },
         "recall": {
-          "value": 0.9706,
+          "value": 0.8233,
           "rank": 1,
-          "interpretation": "97.06% of actual failures are correctly identified"
+          "interpretation": "82.33% of actual failures are correctly identified"
         },
         "f1_score": {
-          "value": 0.9706,
+          "value": 0.7367,
           "rank": 2,
           "balanced": true
         },
         "accuracy": {
-          "value": 0.9980,
+          "value": 0.9907,
           "rank": 2,
-          "percentage": "99.80%"
+          "percentage": "99.07%"
         }
       },
       "confusion_matrix": {
-        "true_negatives": 1930,
-        "false_positives": 2,
-        "false_negatives": 2,
-        "true_positives": 66
+        "true_negatives": 26679,
+        "false_positives": 177,
+        "false_negatives": 76,
+        "true_positives": 354
       },
       "error_analysis": {
-        "total_errors": 4,
-        "error_rate": 0.002,
-        "false_positive_rate": 0.001,
-        "false_negative_rate": 0.001,
-        "false_positive_count": 2,
-        "false_negative_count": 2
+        "total_errors": 253,
+        "error_rate": 0.0093,
+        "false_positive_rate": 0.0066,
+        "false_negative_rate": 0.1767,
+        "false_positive_count": 177,
+        "false_negative_count": 76
       },
-      "recommendation": "Best overall discrimination (ROC-AUC 0.9933) - recommended for production"
+      "recommendation": "Best recall (0.8233) - catches more failures, suitable for high-risk systems"
     }
   },
   "comparison": {
@@ -286,16 +286,16 @@
     ],
     "data": [
       {
-        "name": "train.csv",
+        "name": "train.csv (80% split)",
         "location": "docs/",
-        "rows": 8000,
-        "purpose": "Training dataset"
+        "rows": 109143,
+        "purpose": "Training dataset subset"
       },
       {
-        "name": "test.csv",
+        "name": "test.csv (20% split)",
         "location": "docs/",
-        "rows": 2000,
-        "purpose": "Test/evaluation dataset"
+        "rows": 27286,
+        "purpose": "Test/evaluation dataset subset"
       }
     ]
   },

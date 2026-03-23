@@ -1,0 +1,31 @@
+{
+  "dataset": "test.csv",
+  "timestamp": "2026-03-23 13:51:25",
+  "total_records": 90954,
+  "predicted_failures": 1330,
+  "failure_rate": 1.4622776348483848,
+  "probability_stats": {
+    "mean": 0.023223809897899628,
+    "median": 0.0018896546680480242,
+    "std": 0.1180456355214119,
+    "min": 9.844523447100073e-06,
+    "max": 0.9999862909317017,
+    "q25": 0.0007008117390796542,
+    "q75": 0.005983995622955263
+  },
+  "risk_distribution": {
+    "Critical": 1119,
+    "High": 70,
+    "Medium": 141,
+    "Low": 414,
+    "Very Low": 89210
+  },
+  "models_used": {
+    "primary": "XGBoost",
+    "ensemble": [
+      "XGBoost",
+      "LightGBM"
+    ],
+    "probability_column": "XGBoost_probability"
+  }
+}

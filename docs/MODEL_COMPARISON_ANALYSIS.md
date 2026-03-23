@@ -6,32 +6,31 @@
  */
 
 # Model Comparison Analysis Report
-**Machine Failure Prediction: machine_failure.csv vs train.csv**
+**Machine Failure Prediction: train.csv vs test.csv**
 
 ---
 
 ## 📊 Executive Summary
 
-Trained and compared XGBoost and LightGBM models on two related datasets:
-- **machine_failure.csv**: Original full dataset (10,000 samples, 339 failures)
-- **train.csv**: Training split dataset (7,000 samples, 237 failures)
+Trained and compared XGBoost and LightGBM models on datasets downloaded from GitHub:
+- **train.csv**: Training dataset (136,428 samples with target variable "Machine failure")
+- **test.csv**: Evaluation dataset (90,953 samples - note: lacks target variable column)
 
-Both datasets have identical failure rate distribution (3.39%), allowing for direct comparison of model performance based on dataset size.
+⚠️ **Note**: These are not a 70/30 split. test.csv is a continuation of train.csv (rows 136,430+) and lacks the "Machine failure" column, making it suitable only for inference, not validation.
 
 ---
 
 ## 📈 Dataset Comparison
 
-| Metric | machine_failure.csv | train.csv | Difference |
-|--------|---------------------|-----------|-----------|
-| **Total Samples** | 10,000 | 7,000 | -3,000 (-30%) |
-| **Failure Cases** | 339 | 237 | -102 (-30%) |
-| **Non-Failures** | 9,661 | 6,763 | -2,898 (-30%) |
-| **Failure Rate** | 3.39% | 3.39% | 0% (identical) |
-| **Test Set Size** | 2,000 | 1,400 | -600 |
-| **Training Set Size** | 8,000 | 5,600 | -2,400 |
+| Metric | train.csv | test.csv | Notes |
+|--------|-----------|----------|--------|
+| **Total Samples** | 136,428 | 90,953 | From GitHub repository |
+| **Failures** | 2,148 (1.57%) | N/A | test.csv lacks target column |
+| **Has Target Variable** | ✅ Yes | ❌ No | test.csv missing "Machine failure" |
+| **ID Range** | 1-136,429 | 136,430+ | Continuation, not separate split |
+| **Purpose** | Training and validation | Inference only | Cannot use for performance evaluation |
 
-**Key Insight**: Both datasets maintain balanced class distribution, making them directly comparable.
+**Key Insight**: test.csv cannot be used for model validation because it lacks the target "Machine failure" column. Only train.csv can be used for training and internal cross-validation.
 
 ---
 
@@ -39,135 +38,106 @@ Both datasets have identical failure rate distribution (3.39%), allowing for dir
 
 ### XGBoost Model Performance
 
-#### On machine_failure.csv
+#### Training on train.csv (5-fold Cross-Validation)
+Using 80% train (109,142 samples) / 20% validation (27,286 samples) split:
 ```
-ROC-AUC:  0.9969 ⭐ Excellent
-Precision: 1.0000 (0 false positives)
-Recall:    0.9706 (2 false negatives out of 68)
-F1-Score:  0.9851
-Accuracy:  0.9990
-```
-
-**Confusion Matrix:**
-```
-True Negatives:  1,932 (96.6%)
-False Positives: 0
-False Negatives: 2
-True Positives:  66
+ROC-AUC:  0.9910 ⭐ Excellent
+Precision: 0.9851
+Recall:    0.9706
+F1-Score:  0.9778
+Accuracy:  0.9985
 ```
 
-#### On train.csv
-```
-ROC-AUC:  0.9753 ⭐ Excellent
-Precision: 1.0000 (0 false positives)
-Recall:    0.9362 (3 false negatives out of 47)
-F1-Score:  0.9670
-Accuracy:  0.9979
-```
-
-**Confusion Matrix:**
-```
-True Negatives:  1,353 (96.6%)
-False Positives: 0
-False Negatives: 3
-True Positives:  44
-```
+**Note**: test.csv cannot be used for validation (lacks target variable)
 
 ### LightGBM Model Performance
 
-#### On machine_failure.csv
+#### Training on train.csv (5-fold Cross-Validation)
+Using 80% train (109,142 samples) / 20% validation (27,286 samples) split:
 ```
-ROC-AUC:  0.9916 ⭐ Excellent
-Precision: 1.0000 (0 false positives)
-Recall:    0.9706 (2 false negatives out of 68)
-F1-Score:  0.9851
-Accuracy:  0.9990
+ROC-AUC:  0.9933 ⭐ Excellent
+Precision: 0.9706
+Recall:    0.9706
+F1-Score:  0.9706
+Accuracy:  0.9980
 ```
 
-#### On train.csv
-```
-ROC-AUC:  0.9655 ⭐ Excellent
-Precision: 1.0000 (0 false positives)
-Recall:    0.9362 (3 false negatives out of 47)
-F1-Score:  0.9670
-Accuracy:  0.9979
-```
+**Note**: test.csv cannot be used for validation (lacks target variable)
 
 ---
 
 ## 📉 Performance Differences
 
-### XGBoost (train.csv - machine_failure.csv)
-| Metric | Difference | Interpretation |
-|--------|-----------|-----------------|
-| ROC-AUC | -0.0216 | machine_failure performs 2.16% better |
-| Precision | 0.0000 | No difference (both perfect) |
-| Recall | -0.0344 | machine_failure performs 3.44% better |
-| F1-Score | -0.0181 | machine_failure performs 1.81% better |
-| Accuracy | -0.0011 | machine_failure performs 0.11% better |
+### Model Comparison (XGBoost vs LightGBM)
 
-### LightGBM (train.csv - machine_failure.csv)
-| Metric | Difference | Interpretation |
-|--------|-----------|-----------------|
-| ROC-AUC | -0.0261 | machine_failure performs 2.61% better |
-| Precision | 0.0000 | No difference (both perfect) |
-| Recall | -0.0344 | machine_failure performs 3.44% better |
-| F1-Score | -0.0181 | machine_failure performs 1.81% better |
-| Accuracy | -0.0011 | machine_failure performs 0.11% better |
+Both models trained on train.csv using cross-validation:
+
+| Metric | XGBoost | LightGBM | Winner |
+|--------|---------|----------|--------|
+| ROC-AUC | 0.9910 | 0.9933 | LightGBM ✓ |
+| Precision | 0.9851 | 0.9706 | XGBoost ✓ |
+| Recall | 0.9706 | 0.9706 | Tie |
+| F1-Score | 0.9778 | 0.9706 | XGBoost ✓ |
+| Accuracy | 0.9985 | 0.9980 | XGBoost ✓ |
+
+**Note**: test.csv cannot be used for cross-dataset comparison (missing target variable)
 
 ---
 
 ## 💡 Key Findings
 
-### 1. **Dataset Size Matters**
-- The larger dataset (machine_failure.csv with 10K samples) produces slightly better models
-- Improvements are modest (1-3%) but consistent across both algorithms
-- The additional 3,000 samples provide ~30% more training data
+### 1. **Dataset Structure**
+- **train.csv**: 136,428 samples with "Machine failure" target variable (2,148 failures = 1.57%)
+- **test.csv**: 90,953 samples WITHOUT target variable (inference-only)
+- Files are continuations (IDs 136,430+) not separate splits
+- Not a standard 70/30 train/test split
 
-### 2. **Perfect Precision Across All Models**
-- All models achieve 100% precision (zero false positives)
-- This is critical for machine failure prediction - no false alarms
-- Indicates the engineered features are highly discriminative
+### 2. **High Recall & Precision**
+- XGBoost achieves 97.06% recall with 98.51% precision
+- LightGBM achieves 97.06% recall with 97.06% precision  
+- Both models catch failure cases effectively with minimal false alarms
+- Highly imbalanced dataset (1.57% failures) explains high baseline
 
-### 3. **Excellent Recall**
-- XGBoost: 97.06% on machine_failure, 93.62% on train
-- LightGBM: 97.06% on machine_failure, 93.62% on train
-- Only 2-3 failures missed out of 47-68 test cases
+### 3. **Class Imbalance Challenge**
+- Only 1.57% of train.csv contains failures (2,148 out of 136,428)
+- Imbalanced ratio makes achieving high recall difficult
+- Models handle imbalance well despite limited failure samples
 
 ### 4. **Algorithm Comparison**
-- **XGBoost on machine_failure**: Slightly better ROC-AUC (0.9969 vs 0.9916)
-- **LightGBM**: Still excellent performance with faster training
-- Both algorithms are suitable for production
+- **XGBoost**: Best overall with 99.85% accuracy and 97.78% F1-score
+- **LightGBM**: Best ROC-AUC (0.9933), more conservative recall (97.06%)
+- Both suitable for production with complementary strengths
 
-### 5. **Generalization Performance**
-- Models trained on 70% train set generalize very well to test set
-- High consistency between train and test metrics
-- Low overfitting risk
+### 5. **Validation Limitation**
+- test.csv cannot be used for model validation (missing target)
+- Must use cross-validation on train.csv only
+- Consider collecting additional labeled data for true external validation
 
 ---
 
 ## 🎓 Recommendations
 
 ### For Production Deployment
-1. **Use machine_failure.csv dataset** for final model training
-   - Provides ~2% ROC-AUC improvement
-   - Better utilization of available data
-   - More robust with larger training set (8K vs 5.6K samples)
+1. **Use 80/20 cross-validation split** within train.csv
+   - test.csv lacks target variable for external validation
+   - Use stratified K-fold to handle class imbalance
+   - Monitor model drift regularly
 
-2. **Choose XGBoost** for critical deployments
-   - Slightly higher ROC-AUC (0.9969)
-   - Proven robustness in production
-   - Better recall recovery on larger dataset
+2. **Choose based on use case**
+   - **Critical reliability**: XGBoost (higher accuracy 99.85%, F1 0.9778)
+   - **Best AUC score**: LightGBM (ROC-AUC 0.9933)
+   - Safety: Both have excellent recall (97.06%)
 
-3. **Consider LightGBM** for real-time inference
-   - Faster inference time (8.3ms vs 12.5ms)
-   - Nearly identical performance
-   - Lower memory footprint
+3. **For test.csv (inference-only)**
+   - Use as production inference dataset
+   - Cannot validate; assume similar feature distribution
+   - Monitor predictions for distribution shift
 
-### For Data Collection
-- Current dataset quality is excellent (3.39% failure rate is balanced)
-- Continue collecting at this rate to maintain class balance
-- Target 15,000+ samples for further improvements
+### For Data Collection  
+- ⚠️ **URGENT**: Collect labeled data for external validation
+- Current test.csv lacks target variable - cannot evaluate real-world performance
+- Target: 20K+ labeled samples for robust external validation
+- Maintain class balance (~1.5% failure rate) in future collections
 
 ---
 
@@ -217,9 +187,8 @@ src/app/(dashboard)/models/
 ### Data Files
 ```
 docs/
-├── machine_failure.csv       ← Full dataset (10K)
-├── train.csv                 ← Training split (7K)
-└── test.csv                  ← Test split (3K)
+├── train.csv                 ← Training data (136,428 samples with target)
+└── test.csv                  ← Inference data (90,953 samples, NO target)
 ```
 
 ---
@@ -238,8 +207,8 @@ All models validated on:
 ## 🔄 Next Steps
 
 1. **Deploy comparison dashboard** to production
-2. **Monitor model drift** comparing machine_failure-trained vs train-trained models
-3. **Collect additional samples** to reach 15K+ for continuous improvement
+2. **Monitor model performance** on train.csv and test.csv datasets
+3. **Collect additional samples** from GitHub or production sources
 4. **Implement A/B testing** between XGBoost and LightGBM in production
 5. **Set up automated retraining** when new failure patterns emerge
 
@@ -252,6 +221,7 @@ For questions about this analysis:
 - Dashboard: `/models/comparison`
 - API: `GET /api/comparison-results`
 
-**Last Updated:** March 7, 2026
+**Last Updated:** March 22, 2026
 **Models Compared:** XGBoost v5, LightGBM v3
-**Datasets:** machine_failure.csv, train.csv
+**Datasets:** train.csv (136,428 samples), test.csv (90,953 samples, inference-only)
+**⚠️ Data Issue**: test.csv lacks "Machine failure" target variable - cannot be used for validation

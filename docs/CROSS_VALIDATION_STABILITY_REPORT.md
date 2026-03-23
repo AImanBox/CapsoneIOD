@@ -26,7 +26,7 @@ Both XGBoost and LightGBM models have been rigorously validated using 5-fold str
 - **Folds**: 5 separate train/test splits
 - **Stratification**: Class distribution maintained in each fold
 - **Random State**: 42 (for reproducibility)
-- **Data**: All 10,000 samples from machine_failure.csv
+- **Data**: All 136,428 samples from train.csv
 - **Features**: 25 engineered features
 
 ### Rationale
@@ -37,17 +37,17 @@ Both XGBoost and LightGBM models have been rigorously validated using 5-fold str
 
 ### Data Split Configuration
 ```
-Original Dataset (10,000 samples):
-├── No Failure (0):  9,661 samples (96.61%)
-└── Failure (1):       339 samples (3.39%)
+Original Dataset (136,428 samples from train.csv):
+├── No Failure (0):  134,280 samples (98.43%)
+└── Failure (1):      2,148 samples (1.57%)
 
-Each Fold Contains:
-├── Training: ~8,000 samples
-└── Testing:  ~2,000 samples
+Main Train/Test Split (80/20):
+├── Training: 109,143 samples
+└── Testing:  27,286 samples
 
 Stratification Maintains:
-├── No Failure (0): ~96.61% in each fold
-└── Failure (1):     ~3.39% in each fold
+├── No Failure (0): ~98.43% in each subset
+└── Failure (1):     ~1.57% in each subset
 ```
 
 ---

@@ -21,7 +21,7 @@ class DataLoader:
     Load and preprocess machine failure datasets.
     
     @description
-    Manages loading of train.csv and test.csv from the binary classification dataset.
+    Manages loading of train_tr.csv (training split) and train_te.csv (test split) from the binary classification dataset.
     Handles categorical encoding, missing value validation, and feature preparation.
     """
     
@@ -41,7 +41,7 @@ class DataLoader:
         """
         Initialize DataLoader.
         
-        @param data_dir Path to directory containing train.csv and test.csv
+        @param data_dir Path to directory containing train_tr.csv and train_te.csv
         """
         self.data_dir = Path(data_dir)
         self.label_encoder = LabelEncoder()
@@ -49,34 +49,34 @@ class DataLoader:
     
     def load_train_data(self) -> pd.DataFrame:
         """
-        Load and validate training dataset.
+        Load and validate training dataset (80% split from original dataset).
         
         @returns DataFrame with training data including target variable
-        @throws FileNotFoundError if train.csv not found
+        @throws FileNotFoundError if train_tr.csv not found
         """
-        train_path = self.data_dir / 'train.csv'
+        train_path = self.data_dir / 'train_tr.csv'
         if not train_path.exists():
             raise FileNotFoundError(f"Training data not found at {train_path}")
         
         df = pd.read_csv(train_path)
-        print(f"✅ Loaded train.csv: {len(df)} rows × {len(df.columns)} columns")
+        print(f"✅ Loaded train_tr.csv: {len(df)} rows × {len(df.columns)} columns")
         print(f"   Class distribution: {df[self.TARGET_COLUMN].value_counts().to_dict()}")
         
         return df
     
     def load_test_data(self) -> pd.DataFrame:
         """
-        Load test dataset (without target variable).
+        Load test dataset (20% split from original dataset).
         
         @returns DataFrame with test data for evaluation/prediction
-        @throws FileNotFoundError if test.csv not found
+        @throws FileNotFoundError if train_te.csv not found
         """
-        test_path = self.data_dir / 'test.csv'
+        test_path = self.data_dir / 'train_te.csv'
         if not test_path.exists():
             raise FileNotFoundError(f"Test data not found at {test_path}")
         
         df = pd.read_csv(test_path)
-        print(f"✅ Loaded test.csv: {len(df)} rows × {len(df.columns)} columns")
+        print(f"✅ Loaded train_te.csv: {len(df)} rows × {len(df.columns)} columns")
         
         return df
     

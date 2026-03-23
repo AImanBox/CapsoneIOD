@@ -9,7 +9,7 @@ This script performs 5-fold cross-validation on both XGBoost and LightGBM models
 to assess their stability and generalization capability across different data splits.
 
 Process:
-1. Load machine_failure.csv
+1. Load train.csv and test.csv
 2. Preprocess and engineer features
 3. Run 5-fold stratified cross-validation for both models
 4. Calculate mean and std of all metrics
@@ -77,12 +77,19 @@ class CrossValidationValidator:
         print("STEP 1: LOAD AND PREPARE DATA")
         print("="*70)
         
-        # Load dataset
-        if not (self.data_dir / 'machine_failure.csv').exists():
-            raise FileNotFoundError(f"machine_failure.csv not found in {self.data_dir}")
+        # Load dataset (combine train and test for full cross-validation)
+        train_path = self.data_dir / 'train.csv'
+        test_path = self.data_dir / 'test.csv'
         
-        df = pd.read_csv(self.data_dir / 'machine_failure.csv')
-        print(f"\n✅ Loaded machine_failure.csv: {len(df)} rows × {len(df.columns)} columns")
+        if not train_path.exists():
+            raise FileNotFoundError(f"train.csv not found in {self.data_dir}")
+        if not test_path.exists():
+            raise FileNotFoundError(f"test.csv not found in {self.data_dir}")
+        
+        df_train = pd.read_csv(train_path)
+        df_test = pd.read_csv(test_path)
+        df = pd.concat([df_train, df_test], ignore_index=True)
+        print(f"\n✅ Loaded train.csv and test.csv: {len(df)} rows × {len(df.columns)} columns")
         
         # Show class distribution
         print(f"\n📊 Dataset Class Distribution:")

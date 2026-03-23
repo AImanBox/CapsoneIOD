@@ -1,0 +1,20 @@
+{
+  "timestamp": "2026-03-23 13:19:15",
+  "training_file": "docs/train_tr.csv",
+  "test_file": "docs/train_te.csv",
+  "training_samples": 109143,
+  "test_samples": 27286,
+  "feature_count": 24,
+  "models": {
+    "lightgbm": {
+      "train_auc": "0.9986",
+      "test_auc": "0.9489",
+      "status": "\u2705 TRAINED"
+    },
+    "xgboost": {
+      "train_auc": "0.9999",
+      "test_auc": "0.9469",
+      "status": "\u2705 TRAINED"
+    }
+  }
+}

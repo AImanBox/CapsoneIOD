@@ -4,15 +4,17 @@
 @description Complete retraining pipeline with configurable parameters
 @module ml.scripts.retrain_models
 @created 2026-03-08
+@modified 2026-03-23
 
 This script retrains all AI models with specified parameters:
-1. Loads machine_failure.csv
+1. Loads train.csv (136,428 samples with target variable)
 2. Splits into train/test with test_size=0.2, random_state=42 (stratified)
 3. Preprocesses and engineers features
 4. Trains XGBoost model
 5. Trains LightGBM model
 6. Evaluates and saves models with metrics
-7. Updates model registry
+7. Generates performance reports
+8. Updates model registry
 """
 
 import os
@@ -75,17 +77,17 @@ class RetrainingPipeline:
         print(f"Timestamp: {self.timestamp}")
     
     def prepare_datasets(self):
-        """Load and split machine_failure.csv into train/test with configured parameters."""
+        """Load and split train.csv into train/test with configured parameters."""
         print("\n" + "="*70)
-        print("STEP 1: PREPARE DATASETS FROM machine_failure.csv")
+        print("STEP 1: PREPARE DATASETS FROM train.csv")
         print("="*70)
         
-        # Load the machine failure dataset
-        if not (self.data_dir / 'machine_failure.csv').exists():
-            raise FileNotFoundError(f"machine_failure.csv not found in {self.data_dir}")
+        # Load the training dataset
+        if not (self.data_dir / 'train.csv').exists():
+            raise FileNotFoundError(f"train.csv not found in {self.data_dir}")
         
-        df = pd.read_csv(self.data_dir / 'machine_failure.csv')
-        print(f"\n✅ Loaded machine_failure.csv: {len(df)} rows × {len(df.columns)} columns")
+        df = pd.read_csv(self.data_dir / 'train.csv')
+        print(f"\n✅ Loaded train.csv: {len(df)} rows × {len(df.columns)} columns")
         
         # Show class distribution
         print(f"\n📊 Original Dataset Class Distribution:")
